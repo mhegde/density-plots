@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde, pearsonr
 import argparse, matplotlib
 
+matplotlib.rc("pdf", fonttype=42)
+
 
 def get_parser():
     parser = argparse.ArgumentParser()
@@ -27,27 +29,29 @@ def generate_figure(df, col1, col2):
     idx = z.argsort()
     x, y, z = x[idx], y[idx], z[idx]
     fig, ax = plt.subplots()
-    ax.scatter(x, y, c=z, s=20, edgecolor='')
+    den = ax.scatter(x, y, c=z, s=20, edgecolor='', alpha = 0.6, cmap='jet')
+    cbar = fig.colorbar(den)
+    cbar.solids.set_edgecolor("face")
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.xaxis.set_tick_params(bottom='on', top='off')
     ax.yaxis.set_tick_params(left='on', right='off')
-    ax.spines['bottom'].set_position('zero')
-    ax.spines['bottom'].set_linewidth(2.0)
-    ax.spines['left'].set_position('zero')
-    ax.spines['left'].set_linewidth(2.0)
+    #ax.spines['bottom'].set_position('zero')
+    #ax.spines['bottom'].set_linewidth(2.0)
+    #x.spines['left'].set_position('zero')
+    #x.spines['left'].set_linewidth(2.0)
     lims = [
         np.min([ax.get_xlim(), ax.get_ylim()]),  # min of both axes
         np.max([ax.get_xlim(), ax.get_ylim()]),  # max of both axes
     ]
-    ax.plot(lims, lims, 'k-', alpha=0.75, zorder=1,linestyle='dashed',linewidth=2.0)
+    #ax.plot(lims, lims, 'k-', alpha=0.75, zorder=1,linestyle='dashed',linewidth=2.0)
     ax.set_aspect('equal')
     ax.set_xlim(lims)
     ax.set_ylim(lims)
-    ax.set_xlabel(args.col1, fontsize=18, labelpad=220)
-    ax.set_ylabel(args.col2, fontsize=18, labelpad=220)
-    ax.xaxis.set_tick_params(labelsize=18)
-    ax.yaxis.set_tick_params(labelsize=18)
+    ax.set_xlabel(col1, fontsize=18, labelpad=220)
+    ax.set_ylabel(col2, fontsize=18, labelpad=220)
+    #ax.xaxis.set_tick_params(labelsize=18)
+    #ax.yaxis.set_tick_params(labelsize=18)
     ax.text(np.min(ax.get_xlim())+1,np.max(ax.get_ylim())-0.5,'r = '+str(corr))
     fig.savefig(col1+'_'+col2+'_'+'density_plot.pdf')
     return
