@@ -29,7 +29,7 @@ def generate_figure(df, col1, col2):
     idx = z.argsort()
     x, y, z = x[idx], y[idx], z[idx]
     fig, ax = plt.subplots()
-    den = ax.scatter(x, y, c=z, s=20, edgecolor='', alpha = 0.6, cmap='jet')
+    den = ax.scatter(x, y, c=z, s=20, edgecolor='', alpha = 0.6, cmap='cividis', rasterized=True)
     cbar = fig.colorbar(den)
     cbar.solids.set_edgecolor("face")
     ax.spines['top'].set_visible(False)
